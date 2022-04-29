@@ -1,28 +1,29 @@
-#導入 Discord.py
 import discord
 from logger import logging
+from function import say
+import instruction
 
-#client 是我們與 Discord 連結的橋樑
 client = discord.Client()
 
 logger = logging.get_logger()
 
-#調用 event 函式庫
+#调用event
 @client.event
-#當機器人完成啟動時
 async def on_ready():
-    logger.info('目前登入身份：' + str(client.user))
+    logger.info('Bot登入身份：' + str(client.user))
+    game = discord.Game('牛子')
+    await client.change_presence(activity=game)
 
 @client.event
-#當有訊息時
 async def on_message(message):
-    #排除自己的訊息，避免陷入無限循環
     if message.author == client.user:
         return
-    #如果包含 ping，機器人回傳 pong
-    if message.content == 'ping':
-        await message.channel.send('pong')
+    if message.content.startswith(instruction.Help.Say.value):
+        await message.channel.send(say.Say(message.content))
+    if message.content.startswith("安狗内"):
+        await message.channel.send(say.Say(instruction.Help.Say.value + ' 嗨害嗨'))
+        await message.channel.send(':poop:')
 
-client.run('ODU4MjEwMDIyMTA1NTQ2Nzcz.YNa0Xg.RhJUJDuHILbp5Wz8ae_BcNiL3yg') #TOKEN 在剛剛 Discord Developer 那邊「BOT」頁面裡面
+client.run('')
 
 
