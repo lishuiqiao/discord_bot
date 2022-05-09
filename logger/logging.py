@@ -12,7 +12,7 @@ log_path = os.path.join(dir_path, "bot.log")
 
 # encoding='utf-8'
 logging.basicConfig(filename=log_path, level=logging.INFO,
-    filemode = 'a', format='%(levelname)s:%(asctime)s:%(message)s', datefmt='%Y-%d-%m %H:%M:%S')
+    filemode = 'a', format='%(levelname)s:%(asctime)s:%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 
 def get_logger():

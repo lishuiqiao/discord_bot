@@ -1,29 +1,31 @@
 import discord
 from logger import logging
-from function import say
-import instruction
+from common.consts import *
+from discord.ext import commands
+from common.checkin_status import checkin
 
-client = discord.Client()
-
+c = commands.Bot(command_prefix='~')
 logger = logging.get_logger()
 
-#调用event
-@client.event
+
+# 调用event
+@c.event
 async def on_ready():
-    logger.info('Bot登入身份：' + str(client.user))
+    logger.info('Bot登入身份：' + str(c.user))
     game = discord.Game('牛子')
-    await client.change_presence(activity=game)
+    await c.change_presence(activity=game)
+    print("start success")
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-    if message.content.startswith(instruction.Help.Say.value):
-        await message.channel.send(say.Say(message.content))
-    if message.content.startswith("安狗内"):
-        await message.channel.send(say.Say(instruction.Help.Say.value + ' 嗨害嗨'))
-        await message.channel.send(':poop:')
-
-client.run('')
+@c.command()
+async def say(ctx, *args):
+    await ctx.send(' '.join(args))
 
 
+@c.command(name='安狗内')
+async def angounei(ctx):
+    await ctx.send('嗨害嗨')
+    await ctx.send(':poop:')
+
+checkin_task = checkin(bot=c, message='test message')
+checkin_task.run()
+c.run('')
