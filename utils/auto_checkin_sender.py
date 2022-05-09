@@ -6,9 +6,8 @@ def formatted_logs():
     chenannan_log = ""
     lines = []
     splits = []
-    home_path = os.path.join(os.path.abspath(__file__), '../../..')
     log_path = 'genshin/AutoMihoyoBBS/logs/logging.log'
-    with open(os.path.join(home_path, log_path), encoding='utf-8') as f:
+    with open(os.path.join(os.path.expanduser('~'), log_path), encoding='utf-8') as f:
         for line1 in f:
             lines.append(line1)
     for x in lines:
@@ -37,6 +36,4 @@ def formatted_logs():
 
 
 if __name__ == '__main__':
-    home_path = os.path.join(os.path.abspath(__file__), '../../..')
-    log_path = 'genshin/AutoMihoyoBBS/logs/logging.log'
-    print(os.path.join(home_path, log_path))
+    print(formatted_logs())

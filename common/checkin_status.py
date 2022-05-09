@@ -36,7 +36,7 @@ class checkin(commands.Cog):
         # 获取现在时间
         now_time = datetime.datetime.now()
         # 获取第一次运行时间
-        if now_time.time().hour <= 12:
+        if now_time.time().hour < 12:
             time_diff = (datetime.datetime(year=now_time.date().year, month=now_time.date().month,
                                            day=now_time.date().day,
                                            hour=12, minute=0, second=0) - now_time).total_seconds()
