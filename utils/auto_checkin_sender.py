@@ -29,10 +29,12 @@ def formatted_logs():
             else:
                 for x in lines[splits[s]:]:
                     chenannan_log += x
-    return {
-        "luansiqi": luansiqi_log,
-        "chenannan": chenannan_log
-    }
+    msg = {}
+    if luansiqi_log:
+        msg['luansiqi'] = luansiqi_log
+    if chenannan_log:
+        msg['chenannan'] = chenannan_log
+    return msg
 
 
 if __name__ == '__main__':

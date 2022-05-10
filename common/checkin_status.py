@@ -19,22 +19,28 @@ class checkin(commands.Cog):
     @tasks.loop(hours=24)
     async def messageDaily(self):
         logs = formatted_logs()
-        for k, v in logs:
-            if k == "luansiqi":
-                await self.DirectMessageCheckinLog(v, ids.luansiqi.value)
-            if k == "chenannan":
-                await self.DirectMessageCheckinLog(v, ids.chenannan.value)
+        if logs:
+            for k, v in logs.items():
+                if k == "luansiqi":
+                    await self.DirectMessageCheckinLog(v, ids.luansiqi.value)
+                if k == "chenannan":
+                    await self.DirectMessageCheckinLog(v, ids.chenannan.value)
+        else:
+            await self.DirectMessageCheckinLog('no log', ids.luansiqi.value)
 
     @messageDaily.before_loop
     async def before(self):
         # 首次运行直接调取一次log
         logs = formatted_logs()
         await self.bot.wait_until_ready()
-        for k, v in logs.items():
-            if k == "luansiqi":
-                await self.DirectMessageCheckinLog(v, ids.luansiqi.value)
-            if k == "chenannan":
-                await self.DirectMessageCheckinLog(v, ids.chenannan.value)
+        if logs:
+            for k, v in logs.items():
+                if k == "luansiqi":
+                    await self.DirectMessageCheckinLog(v, ids.luansiqi.value)
+                if k == "chenannan":
+                    await self.DirectMessageCheckinLog(v, ids.chenannan.value)
+        else:
+            await self.DirectMessageCheckinLog('no log', ids.luansiqi.value)
         # 等待至下一次运行时间
         await asyncio.sleep(self.offset())
 
