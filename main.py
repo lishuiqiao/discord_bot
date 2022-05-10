@@ -26,6 +26,6 @@ async def angounei(ctx):
     await ctx.send('嗨害嗨')
     await ctx.send(':poop:')
 
-checkin_task = checkin(bot=c, message='test message')
+checkin_task = checkin(bot=c)
 checkin_task.run()
 c.run('')

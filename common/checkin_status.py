@@ -9,7 +9,6 @@ from discord.ext import tasks, commands
 
 class checkin(commands.Cog):
     def __init__(self, bot, message=None):
-        self.first_run_flag = True
         self.bot = bot
         self.message = message
 
@@ -19,10 +18,6 @@ class checkin(commands.Cog):
     # loop for sending message
     @tasks.loop(hours=24)
     async def messageDaily(self):
-        if self.first_run_flag:
-            await asyncio.sleep(self.offset())
-            print("busy_wait over")
-            self.first_run_flag = False
         logs = formatted_logs()
         for k, v in logs:
             if k == "luansiqi":
@@ -30,6 +25,18 @@ class checkin(commands.Cog):
             if k == "chenannan":
                 await self.DirectMessageCheckinLog(v, ids.chenannan.value)
 
+    @messageDaily.before_loop
+    async def before(self):
+        # 首次运行直接调取一次log
+        logs = formatted_logs()
+        await self.bot.wait_until_ready()
+        for k, v in logs.items():
+            if k == "luansiqi":
+                await self.DirectMessageCheckinLog(v, ids.luansiqi.value)
+            if k == "chenannan":
+                await self.DirectMessageCheckinLog(v, ids.chenannan.value)
+        # 等待至下一次运行时间
+        await asyncio.sleep(self.offset())
 
     # %H:%M:%S
     def offset(self):
