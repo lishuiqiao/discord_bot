@@ -28,4 +28,4 @@ async def angounei(ctx):
 
 checkin_task = checkin(bot=c)
 checkin_task.run()
-c.run('')
+c.run(bot_key)
